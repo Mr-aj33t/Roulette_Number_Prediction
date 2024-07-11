@@ -1,31 +1,98 @@
-#include <iostream>
-#include <vector>
-#include <array>
+// RoulettePredictorProgram.java
+package jmapp.roulettepredictor;
 
-using namespace std;
+import java.util.Scanner;
 
+public class RoulettePredictorProgram {
+
+    public static void main(String[] args) {
+        // Create an instance of the Calculate class
+        Calculate rouletteCalculator = new Calculate();
+
+        // Run the program until manually terminated
+        while (true) {
+            // Get numbers manually
+            int[] inputArray = getManualNumbers();
+
+            // Call the getnumbers method and print the result
+            int[] resultArray = rouletteCalculator.getnumbers(inputArray);
+
+            // Print the result array with color coding
+            System.out.println("=================================");
+            System.out.println("Result Array: ");
+            for (int value : resultArray) {
+                printColoredNumber(value);
+            }
+        }
+    }
+
+    private static int[] getManualNumbers() {
+        Scanner scanner = new Scanner(System.in);
+        int[] manualNumbers = new int[6];
+        System.out.println(" ");
+        System.out.println("Enter 6 numbers: ");
+        System.out.println("_______________________________________");
+        for (int i = 0; i < 6; i++) {
+            System.out.print("Number " + (i + 1) + ": ");
+            manualNumbers[i] = scanner.nextInt();
+        }
+
+        return manualNumbers;
+    }
+
+    private static void printColoredNumber(int value) {
+        if (value == 0) {
+            System.out.print("\u001B[32m" + value + "\u001B[0m "); // Green
+        } else if (value >= 1 && value <= 10) {
+            if (value % 2 == 1) {
+                System.out.print("\u001B[31m" + value + "\u001B[0m "); // Red
+            } else {
+                System.out.print("\u001B[34m" + value + "\u001B[0m "); // Blue
+            }
+        } else if (value >= 11 && value <= 18) {
+            if (value % 2 == 1) {
+                System.out.print("\u001B[34m" + value + "\u001B[0m "); // Blue
+            } else {
+                System.out.print("\u001B[31m" + value + "\u001B[0m "); // Red
+            }
+        } else if (value >= 29 && value <= 36) {
+            if (value % 2 == 1) {
+                System.out.print("\u001B[34m" + value + "\u001B[0m "); // Blue
+            } else {
+                System.out.print("\u001B[31m" + value + "\u001B[0m "); // Red
+            }
+        } else {
+            if (value % 2 == 1) {
+                System.out.print("\u001B[31m" + value + "\u001B[0m "); // Red
+            } else {
+                System.out.print("\u001B[34m" + value + "\u001B[0m "); // Blue
+            }
+        }
+    }
+}
+
+// Calculate.java
 class Calculate {
-private:
-    array<int, 6> o = {0, 0, 0, 0, 0, 0};
-    int sum = 0;
+    private int[] o = new int[]{0, 0, 0, 0, 0, 0};
+    private int sum = 0;
 
-public:
-    array<int, 6> getnumbers(array<int, 6>& iArr) {
-        sum = 0;
+    public int[] getnumbers(int[] iArr) {
+        this.sum = 0;
         int i = 0;
 
         while (i < 6) {
             if (iArr[i] == 0) {
-                sum += 37;
+                this.sum += 37;
             } else {
-                sum += iArr[i];
+                this.sum += iArr[i];
             }
             i++;
         }
 
-        int i2 = sum % 37;
+        // Use modulo to ensure the sum is within the specified range
+        int i2 = this.sum % 37;
 
-        array<int, 6> iArr2 = o;
+        int[] iArr2 = this.o;
         iArr2[0] = i2;
 
         if (i2 * 2 > 37) {
@@ -36,11 +103,13 @@ public:
 
         iArr2[2] = 37 - iArr2[0];
 
+        // Handle other conditions appropriately based on the updated i2 value
         if (i2 == 1) {
             iArr2[2] = 6;
             iArr2[3] = 36;
             iArr2[4] = 31;
         }
+        // ... (continuation of value assignments as needed)
         if (i2 == 6) {
             iArr2[2] = 1;
             iArr2[3] = 36;
@@ -86,7 +155,7 @@ public:
             iArr2[3] = 4;
             iArr2[4] = 33;
         }
-        if (i2 == 33) {
+       if (i2 == 33) {
             iArr2[2] = 3;
             iArr2[3] = 4;
             iArr2[4] = 34;
@@ -146,6 +215,7 @@ public:
             iArr2[3] = 29;
             iArr2[4] = 26;
         }
+        
         if (i2 == 29) {
             iArr2[2] = 11;
             iArr2[3] = 8;
@@ -218,66 +288,4 @@ public:
         }
         return iArr2;
     }
-};
-
-void printColoredNumber(int value) {
-    if (value == 0) {
-        cout << "\033[32m" << value << "\033[0m "; // Green
-    } else if (value >= 1 && value <= 10) {
-        if (value % 2 == 1) {
-            cout << "\033[31m" << value << "\033[0m "; // Red
-        } else {
-            cout << "\033[34m" << value << "\033[0m "; // Blue
-        }
-    } else if (value >= 11 && value <= 18) {
-        if (value % 2 == 1) {
-            cout << "\033[34m" << value << "\033[0m "; // Blue
-        } else {
-            cout << "\033[31m" << value << "\033[0m "; // Red
-        }
-    } else if (value >= 29 && value <= 36) {
-        if (value % 2 == 1) {
-            cout << "\033[34m" << value << "\033[0m "; // Blue
-        } else {
-            cout << "\033[31m" << value << "\033[0m "; // Red
-        }
-    } else {
-        if (value % 2 == 1) {
-            cout << "\033[31m" << value << "\033[0m "; // Red
-        } else {
-            cout << "\033[34m" << value << "\033[0m "; // Blue
-        }
-    }
-}
-
-array<int, 6> getManualNumbers() {
-    array<int, 6> manualNumbers;
-    cout << endl;
-    cout << "Enter 6 numbers: " << endl;
-    cout << "_______________________________________" << endl;
-    for (int i = 0; i < 6; i++) {
-        cout << "Number " << (i + 1) << ": ";
-        cin >> manualNumbers[i];
-    }
-
-    return manualNumbers;
-}
-
-int main() {
-    Calculate rouletteCalculator;
-
-    while (true) {
-        array<int, 6> inputArray = getManualNumbers();
-
-        array<int, 6> resultArray = rouletteCalculator.getnumbers(inputArray);
-
-        cout << "=================================" << endl;
-        cout << "Result Array: " << endl;
-        for (int value : resultArray) {
-            printColoredNumber(value);
-        }
-        cout << endl;
-    }
-
-    return 0;
 }
